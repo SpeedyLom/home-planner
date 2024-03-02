@@ -1,21 +1,7 @@
 {
   "name": "home-planner",
   "packageManager": "yarn@4.1.0",
-  "source": "app/typescript/index.ts",
-  "main": "resources/js/main.js",
-  "types": "resources/js/types/types.d.ts",
-  "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build"
-  },
   "devDependencies": {
-    "@parcel/core": "^2.12.0",
-    "@parcel/transformer-typescript-tsc": "^2.12.0",
-    "@parcel/transformer-typescript-types": "^2.12.0",
-    "parcel": "^2.12.0",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "@parcel/config-default": "^2.12.0"
   }
 }
