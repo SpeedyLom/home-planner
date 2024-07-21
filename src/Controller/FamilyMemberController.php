@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class FamilyMemberController extends AbstractController
 {
-    #[Route('/family/member', name: 'app_family_member')]
+    #[Route('/family/member', name: 'family_member_list')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $familyMembers = $entityManager->getRepository(FamilyMember::class)->findAll();

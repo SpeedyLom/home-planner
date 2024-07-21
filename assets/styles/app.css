@@ -1,3 +1,7 @@
 body {
     background-color: skyblue;
 }
+
+.nav-link .icon i {
+    color: #141727 !important;
+}
