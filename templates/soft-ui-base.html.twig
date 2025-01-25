@@ -79,7 +79,9 @@
                 </ul>
             </div>
         </div>
-        <i class="fa fa-user"></i>&nbsp;{{ app.user.name }}
+        {% if app.user.name is defined %}
+            <i class="fa fa-user"></i>&nbsp;{{ app.user.name }}
+        {% endif %}
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">

@@ -18,6 +18,7 @@ class AssignmentController extends AbstractController
     #[Route('/assignment', name: 'assignment_list')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $assignments = $entityManager->getRepository(Assignment::class)->findAll();
         
         return $this->render('assignment/index.html.twig', [
@@ -35,6 +36,7 @@ class AssignmentController extends AbstractController
     #[Route('/assignment/add', name: 'assignment_add')]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createFormBuilder()
                      ->add('title', TextType::class)
                      ->add('instructions', TextareaType::class)
@@ -73,6 +75,7 @@ class AssignmentController extends AbstractController
     #[Route('/assignment/{id}', name: 'assignment_view')]
     public function view(EntityManagerInterface $entityManager, int $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $assignment = $entityManager->getRepository(Assignment::class)->find($id);
         
         if (!$assignment) {

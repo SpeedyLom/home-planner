@@ -16,6 +16,7 @@ class FamilyMemberController extends AbstractController
     #[Route('/family/member', name: 'family_member_list')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $familyMembers = $entityManager->getRepository(FamilyMember::class)->findAll();
 
         return $this->render('family_member/index.html.twig', [
@@ -33,6 +34,7 @@ class FamilyMemberController extends AbstractController
     #[Route('/family/member/add', name: 'family_member_add')]
     public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = new FamilyMember();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -72,6 +74,7 @@ class FamilyMemberController extends AbstractController
     #[Route('/family/member/{id}', name: 'family_member_view')]
     public function view(EntityManagerInterface $entityManager, int $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $familyMember = $entityManager->getRepository(FamilyMember::class)->find($id);
 
         if (!$familyMember) {

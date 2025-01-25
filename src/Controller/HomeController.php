@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\FamilyMember;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('homepage.html.twig',
         [
             'breadcrumbs' => [
