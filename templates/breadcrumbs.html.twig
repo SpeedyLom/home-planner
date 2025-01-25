@@ -1,0 +1,10 @@
+<li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{ path('homepage') }}">Home planner</a></li>
+{% for breadcrumb in breadcrumbs %}
+    {% if breadcrumb.active is defined %}
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{ breadcrumb.caption }}</li>
+    {% else %}
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{ breadcrumb.url }}">{{ breadcrumb.caption }}</a></li>
+    {% endif %}
+{% endfor %}
+
+

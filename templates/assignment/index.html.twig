@@ -1,12 +1,12 @@
 {% extends 'soft-ui-base.html.twig' %}
 
-{% block title %}Family members{% endblock %}
+{% block title %}Assignments{% endblock %}
 
 {% block body %}
-    <h1>Family members</h1>
+    <h1>Assignments</h1>
     <div class="row">
         <div class="col">
-            <a class="btn btn-primary" href="{{ path('family_member_add') }}" role="button">Add</a>
+            <a class="btn btn-primary" href="{{ path('assignment_add') }}" role="button">Add</a>
         </div>
     </div>
     <div class="row">
@@ -15,19 +15,23 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Due date</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for family_member in family_members %}
+                {% for assignment in assignments %}
                     <tr>
                         <td>
-                            {{ family_member.getId() }}
+                            {{ assignment.getId() }}
                         </td>
                         <td>
-                            <a href="{{ path('family_member_view', {id: family_member.getId()}) }}" role="button">
-                                {{ family_member.getName() }}
+                            <a href="{{ path('assignment_view', {id: assignment.getId()}) }}" role="button">
+                                {{ assignment.getTitle() }}
                             </a>
+                        </td>
+                        <td>
+                            {{ assignment.getDueDate().format('d/m/Y') }}
                         </td>
                     </tr>
                 {% endfor %}

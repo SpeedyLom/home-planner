@@ -21,10 +21,16 @@ class FamilyMemberController extends AbstractController
         return $this->render('family_member/index.html.twig', [
             'controller_name' => 'FamilyMemberController',
             'family_members' => $familyMembers,
+            'breadcrumbs' => [
+                [
+                    'caption' => 'Family members',
+                    'active' => true,
+                ],
+            ],
         ]);
     }
     
-    #[Route('/family/member/add', name: 'app_family_member_add')]
+    #[Route('/family/member/add', name: 'family_member_add')]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder()
@@ -40,15 +46,25 @@ class FamilyMemberController extends AbstractController
             $entityManager->persist($familyMember);
             $entityManager->flush();
             
-            return $this->redirectToRoute('app_family_member_view', ['id' => $familyMember->getId()]);
+            return $this->redirectToRoute('family_member_view', ['id' => $familyMember->getId()]);
         }
         
         return $this->render('family_member/add.html.twig', [
             'form' => $form,
+            'breadcrumbs' => [
+                [
+                    'caption' => 'Family members',
+                    'url' => $this->generateUrl('family_member_list'),
+                ],
+                [
+                    'caption' => 'Add family member',
+                    'active' => true,
+                ],
+            ],
         ]);
     }
     
-    #[Route('/family/member/{id}', name: 'app_family_member_view')]
+    #[Route('/family/member/{id}', name: 'family_member_view')]
     public function view(EntityManagerInterface $entityManager, int $id): Response
     {
         $familyMember = $entityManager->getRepository(FamilyMember::class)->find($id);
@@ -62,6 +78,16 @@ class FamilyMemberController extends AbstractController
         return $this->render('family_member/view.html.twig', [
             'controller_name' => 'FamilyMemberController',
             'family_member' => $familyMember,
+            'breadcrumbs' => [
+                [
+                    'caption' => 'Family members',
+                    'url' => $this->generateUrl('family_member_list'),
+                ],
+                [
+                    'caption' => $familyMember->getName(),
+                    'active' => true,
+                ],
+            ],
         ]);
     }
     

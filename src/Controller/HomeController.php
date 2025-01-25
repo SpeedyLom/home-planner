@@ -13,6 +13,14 @@ class HomeController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('homepage.html.twig');
+        return $this->render('homepage.html.twig',
+        [
+            'breadcrumbs' => [
+                [
+                    'caption' => 'Dashboard',
+                    'active' => true,
+                ],
+            ],
+        ]);
     }
 }
