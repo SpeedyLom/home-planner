@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240329072223 extends AbstractMigration
+final class Version20250125210916 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,10 @@ final class Version20240329072223 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE family_member (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(128) NOT NULL)');
+        $this->addSql('CREATE TABLE assignment (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title VARCHAR(255) NOT NULL, instructions CLOB DEFAULT NULL, due_date DATE NOT NULL)');
+        $this->addSql('CREATE TABLE family_member (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(180) NOT NULL, roles CLOB NOT NULL --(DC2Type:json)
+        , password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_USERNAME ON family_member (username)');
         $this->addSql('CREATE TABLE messenger_messages (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, body CLOB NOT NULL, headers CLOB NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , available_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , delivered_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
@@ -33,6 +36,7 @@ final class Version20240329072223 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP TABLE assignment');
         $this->addSql('DROP TABLE family_member');
         $this->addSql('DROP TABLE messenger_messages');
     }

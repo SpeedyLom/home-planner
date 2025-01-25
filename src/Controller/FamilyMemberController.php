@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\FamilyMember;
+use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class FamilyMemberController extends AbstractController
@@ -31,22 +31,27 @@ class FamilyMemberController extends AbstractController
     }
     
     #[Route('/family/member/add', name: 'family_member_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createFormBuilder()
-                     ->add('name', TextType::class)
-                     ->add('save', SubmitType::class, ['label' => 'Add Family Member'])
-                     ->getForm();
-        
+        $user = new FamilyMember();
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $familyMember = new FamilyMember();
-            $familyMember->setName($form->get('name')->getData());
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
             
-            $entityManager->persist($familyMember);
+            $entityManager->persist($user);
             $entityManager->flush();
             
-            return $this->redirectToRoute('family_member_view', ['id' => $familyMember->getId()]);
+            // do anything else you need here, like send an email
+            
+            return $this->redirectToRoute('family_member_view', ['id' => $user->getId()]);
         }
         
         return $this->render('family_member/add.html.twig', [
