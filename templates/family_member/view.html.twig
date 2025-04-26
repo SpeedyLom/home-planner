@@ -3,6 +3,18 @@
 {% block title %}{{ family_member.getName() }}{% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" href="{{ path('family_member_list') }}" role="button">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+        </div>
+        <div class="col text-end">
+            <a class="btn btn-primary" href="{{ path('family_member_edit') }}" role="button">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+            </a>
+        </div>
+    </div>
     <h1>{{ family_member.getName() }}</h1>
     <div class="row">
         <div class="col">

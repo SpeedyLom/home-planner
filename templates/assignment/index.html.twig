@@ -6,7 +6,7 @@
     <h1>Assignments</h1>
     <div class="row">
         <div class="col">
-            <a class="btn btn-primary" href="{{ path('assignment_add') }}" role="button">Add</a>
+            <a class="btn btn-primary" href="{{ path('assignment_add') }}" role="button"><i class="fa-solid fa-file-circle-plus"></i> Add</a>
         </div>
     </div>
     <div class="row">
@@ -14,24 +14,24 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Due date</th>
+                    <th scope="col">Date set</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for assignment in assignments %}
                     <tr>
                         <td>
-                            {{ assignment.getId() }}
+                            {{ assignment.getTitle() }}
                         </td>
                         <td>
-                            <a href="{{ path('assignment_view', {id: assignment.getId()}) }}" role="button">
-                                {{ assignment.getTitle() }}
+                            {{ assignment.getDateSet().format('d/m/Y') }}
+                        </td>
+                        <td class="text-end">
+                            <a href="{{ path('assignment_view', {id: assignment.getId()}) }}" role="button" class="btn btn-primary">
+                                <i class="fa-solid fa-circle-info"></i> View
                             </a>
-                        </td>
-                        <td>
-                            {{ assignment.getDueDate().format('d/m/Y') }}
                         </td>
                     </tr>
                 {% endfor %}
