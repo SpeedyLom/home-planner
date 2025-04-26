@@ -99,4 +99,18 @@ class FamilyMemberController extends AbstractController
         ]);
     }
     
+    #[Route('/family/member/{id}/edit', name: 'family_member_edit')]
+    public function edit(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $familyMember = $entityManager->getRepository(FamilyMember::class)->find($id);
+        
+        if (!$familyMember) {
+            throw $this->createNotFoundException(
+                'No family member found for id ' . $id
+            );
+        }
+        
+        return new Response();
+    }
 }

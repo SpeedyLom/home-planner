@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssignmentController extends AbstractController
 {
@@ -34,22 +35,28 @@ class AssignmentController extends AbstractController
     }
     
     #[Route('/assignment/add', name: 'assignment_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function add(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $this->createFormBuilder()
-                     ->add('title', TextType::class)
-                     ->add('instructions', TextareaType::class)
-                     ->add('due_date', DateType::class)
-                     ->add('save', SubmitType::class, ['label' => 'Add Assignment'])
-                     ->getForm();
+        
+        $form = $this->createFormBuilder([
+            'date_set' => new \DateTimeImmutable('now')
+        ])
+        ->add('title', TextType::class)
+        ->add('instructions', TextareaType::class)
+        ->add('date_set', DateType::class)
+        ->add('add', SubmitType::class)
+        ->getForm();
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $assignment = new Assignment();
             $assignment->setTitle($form->get('title')->getData());
             $assignment->setInstructions($form->get('instructions')->getData());
-            $assignment->setDueDate($form->get('due_date')->getData());
+            $assignment->setDateSet($form->get('date_set')->getData());
             
             $entityManager->persist($assignment);
             $entityManager->flush();
@@ -100,4 +107,18 @@ class AssignmentController extends AbstractController
         ]);
     }
     
+    #[Route('/assignment/{id}/edit', name: 'assignment_edit')]
+    public function edit(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $assignment = $entityManager->getRepository(Assignment::class)->find($id);
+        
+        if (!$assignment) {
+            throw $this->createNotFoundException(
+                'No assignment found for id ' . $id
+            );
+        }
+        
+        return new Response();
+    }
 }

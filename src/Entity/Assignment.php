@@ -21,7 +21,7 @@ class Assignment
     private ?string $instructions = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $due_date = null;
+    private ?\DateTimeInterface $date_set = null;
 
     public function getId(): ?int
     {
@@ -52,14 +52,14 @@ class Assignment
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface
+    public function getDateSet(): ?\DateTimeInterface
     {
-        return $this->due_date;
+        return $this->date_set;
     }
 
-    public function setDueDate(\DateTimeInterface $due_date): static
+    public function setDateSet(\DateTimeInterface $date_set): static
     {
-        $this->due_date = $due_date;
+        $this->date_set = $date_set;
 
         return $this;
     }
